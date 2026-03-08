@@ -1,12 +1,13 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://cric-king2-0.onrender.com",
+  baseURL: "https://cric-king2-0.onrender.com/api",
 });
 
 // attach JWT token automatically
 API.interceptors.request.use(
   (config) => {
+
     const token = localStorage.getItem("token");
 
     if (token) {
@@ -14,6 +15,7 @@ API.interceptors.request.use(
     }
 
     return config;
+
   },
   (error) => {
     return Promise.reject(error);
