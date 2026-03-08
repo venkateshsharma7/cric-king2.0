@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../api/api";
 
 function Login() {
+
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,13 +18,24 @@ function Login() {
         password
       });
 
+      console.log("Login response:", res.data);
+
+      // store JWT token
       localStorage.setItem("token", res.data.token);
 
-      window.location.href = "/dashboard";
+      alert("Login successful");
+
+      // redirect to dashboard
+      navigate("/dashboard");
 
     } catch (err) {
 
-      alert("Login failed");
+      console.log(err.response?.data);
+
+      alert(
+        err.response?.data?.message ||
+        "Login failed. Check email/password."
+      );
 
     }
 
@@ -40,6 +54,7 @@ function Login() {
         <input
           className="border p-2 rounded w-full mb-4"
           placeholder="Email"
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
@@ -47,6 +62,7 @@ function Login() {
           className="border p-2 rounded w-full mb-6"
           type="password"
           placeholder="Password"
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
